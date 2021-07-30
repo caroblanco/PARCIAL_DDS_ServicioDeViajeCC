@@ -23,7 +23,7 @@ public class validador {
         System.out.println("Ingrese una contrasenia: ");
         String contra = entrada.nextLine();
 
-        while(!(validador.validarContrasenia(contra, usuario))){
+        while(!(validador.validarContrasenia(usuario, contra))){
             System.out.println("Ingrese una nueva contrasenia, la anterior no cumple las condiciones: ");
             contra = entrada.nextLine();
         }

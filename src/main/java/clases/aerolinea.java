@@ -8,9 +8,14 @@ import java.util.Optional;
 public class aerolinea {
 
     List<vuelo> vuelos = new ArrayList<>();
+    private static aerolinea aerolinea = null;
 
-    private aerolinea() {
+    private aerolinea() {}
 
+    public static aerolinea getInstance(){
+       if (aerolinea == null)
+           aerolinea = new aerolinea();
+       return aerolinea;
     }
 
     public List<vuelo> buscarVuelos(String destinoInicial, String destinoFinal){
