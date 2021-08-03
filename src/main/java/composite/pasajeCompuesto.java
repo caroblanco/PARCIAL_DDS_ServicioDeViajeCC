@@ -33,4 +33,10 @@ public class pasajeCompuesto extends itinerario{
     public void liberarAsiento() {
         pasajes.forEach(unP -> unP.liberarAsiento());
     }
+
+    @Override
+    public vuelo getVuelo(String idVuelo) {
+        pasaje pasaje=pasajes.stream().filter(unP -> unP.getIdVuelo() == idVuelo).collect(Collectors.toList()).get(0);
+        return pasaje.getVuelo(idVuelo);
+    }
 }

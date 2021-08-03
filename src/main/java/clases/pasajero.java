@@ -1,6 +1,7 @@
 package clases;
 import composite.itinerario;
 import composite.pasaje;
+import state.estadoState;
 import strategy.notificarStrategy;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,4 +44,11 @@ public class pasajero {
     public itinerario buscarItinerario(int numItinerario){
         return itinerarios.stream().filter(unIt -> unIt.getNumItinerario() == numItinerario).collect(Collectors.toList()).get(0);
     }
+
+    public estadoState verEstado(int numItinerario, String idVuelo){
+        itinerario itinerario = this.buscarItinerario(numItinerario);
+        vuelo vuelo = itinerario.getVuelo(idVuelo);
+        return vuelo.getEstado();
+    }
+
 }

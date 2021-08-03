@@ -34,6 +34,14 @@ public class vuelo {
         }
     }
 
+    public String getHorario(){
+        return this.horario;
+    }
+
+    public String getFecha(){
+
+    }
+
     public asiento buscarAsiento(int numAsiento){
         return asientos.stream().filter(unIt -> unIt.getNumAsiento() == numAsiento).collect(Collectors.toList()).get(0);
     }
@@ -47,7 +55,7 @@ public class vuelo {
     }
 
     public void cambiarEstado(estadoState nuevoEstado){
-        estado = nuevoEstado;
+        this.estado = nuevoEstado;
     }
 
     /*
@@ -70,5 +78,9 @@ public class vuelo {
 
     public String getIdVuelo() {
         return idVuelo;
+    }
+
+    public estadoState getEstado(){
+        return estado;
     }
 }

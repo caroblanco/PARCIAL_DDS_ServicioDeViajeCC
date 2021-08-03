@@ -40,4 +40,7 @@ public class pasaje extends itinerario {
         return vuelo.getIdVuelo();
     }
 
+    @Override
+    public vuelo getVuelo(String idVuelo){ return vuelo; }
+
 }

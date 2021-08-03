@@ -1,6 +1,7 @@
 package composite;
 
 import clases.pasajero;
+import clases.vuelo;
 
 public abstract class itinerario {
     int numItinerario;
@@ -19,5 +20,7 @@ public abstract class itinerario {
     public abstract pasaje buscarPasaje(String idVuelo);
 
     public abstract void liberarAsiento();
+
+    public abstract vuelo getVuelo(String idVuelo);
 
 }
