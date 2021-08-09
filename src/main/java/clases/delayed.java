@@ -1,7 +1,4 @@
-package state;
-import clases.vuelo;
-import clases.usuario;
-
+package clases;
 
 
 public class delayed extends estadoState{
@@ -22,6 +19,10 @@ public class delayed extends estadoState{
         int horaVuelo = Integer.parseInt(sHoraVuelo);
 
 
+    }
+
+    public String obtenerTiempoActual() {
+        return "unTiempo";
     }
 
     @Override

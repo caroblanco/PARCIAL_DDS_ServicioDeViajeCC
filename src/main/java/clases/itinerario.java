@@ -1,7 +1,4 @@
-package composite;
-
-import clases.pasajero;
-import clases.vuelo;
+package clases;
 
 public abstract class itinerario {
     int numItinerario;
@@ -22,5 +19,7 @@ public abstract class itinerario {
     public abstract void liberarAsiento();
 
     public abstract vuelo getVuelo(String idVuelo);
+
+    public pasajero getPasajero(){return pasajero;}
 
 }

@@ -1,5 +1,4 @@
 package clases;
-import state.estadoState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +13,7 @@ public class vuelo {
     String horario;
     estadoState estado;
     List<asiento> asientos = new ArrayList<>();
+
 
     public vuelo(String id, int asientosTotales, String origen, String destino,int tarifa, String dia, String horario, estadoState estadoVuelo){
         this.idVuelo = id;
@@ -39,7 +39,7 @@ public class vuelo {
     }
 
     public String getFecha(){
-
+        return this.dia;
     }
 
     public asiento buscarAsiento(int numAsiento){
@@ -54,8 +54,7 @@ public class vuelo {
         return estado;
     }
 
-    public void cambiarEstado(estadoState nuevoEstado){
-        this.estado = nuevoEstado;
+    public void cambiarEstado(estadoState nuevoEstado){this.estado = nuevoEstado;
     }
 
     /*

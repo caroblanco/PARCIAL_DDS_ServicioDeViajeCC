@@ -1,8 +1,4 @@
-package composite;
-import clases.clase;
-import clases.pasajero;
-import clases.vuelo;
-import clases.asiento;
+package clases;
 
 public class pasaje extends itinerario {
     vuelo vuelo;

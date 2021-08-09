@@ -1,7 +1,4 @@
 package clases;
-import composite.itinerario;
-import composite.pasaje;
-import state.estadoState;
 import strategy.notificarStrategy;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +23,8 @@ public class pasajero {
         formaNotif.notificar(mensaje, telefono, usuario.getMail());
     }
 
-    public void comprarItinerario(){
+    public void comprarItinerario(String origen, String destino){
+        List <vuelo> vuelosPosibles = sistema.buscarVuelos(origen,destino);
 
     }
 
@@ -34,11 +32,13 @@ public class pasajero {
         itinerario itinerario = this.buscarItinerario(numItinerario);
         itinerarios.remove(itinerario);
         itinerario.liberarAsiento();
+        this.serNotificado("se ha cancelado su itinerario numero: "+ numItinerario);
     }
 
     public void modificarAsiento(int numItinerario, String idVuelo, int nuevoAsiento){
         itinerario itinerario = this.buscarItinerario(numItinerario);
         itinerario.cambiarAsiento(idVuelo, nuevoAsiento);
+        this.serNotificado("se ha modificado el vuelo: "+ idVuelo + "de su itinerario: "+numItinerario );
     }
 
     public itinerario buscarItinerario(int numItinerario){
@@ -51,4 +51,9 @@ public class pasajero {
         return vuelo.getEstado();
     }
 
+    public List<itinerario> getItinerarios(){return itinerarios;}
+
+    public boolean tieneItinerario(int numItinerario){
+        return itinerarios.stream().anyMatch(unIt -> unIt.getNumItinerario() == numItinerario);
+    }
 }

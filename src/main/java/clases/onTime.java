@@ -1,6 +1,4 @@
-package state;
-import clases.vuelo;
-import clases.usuario;
+package clases;
 
 
 public class onTime extends estadoState{
@@ -25,7 +23,7 @@ public class onTime extends estadoState{
         String horarioVuelo = vuelo.getHorario();
         String fechaVuelo = vuelo.getFecha();
         //int comparacion = tiempoActual.compareTo(horarioVuelo);
-        if( this.estaATiempo(horarioVuelo, )){
+        if( this.estaATiempo(horarioVuelo, fechaVuelo)){
             //pasajero.serNotificado("Vuelo on Time");
         }else if(comparacion == 1){
             //pasajero.serNotificado("Vuelo delayed");

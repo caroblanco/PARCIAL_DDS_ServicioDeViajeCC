@@ -1,7 +1,4 @@
-package composite;
-import clases.clase;
-import clases.pasajero;
-import clases.vuelo;
+package clases;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

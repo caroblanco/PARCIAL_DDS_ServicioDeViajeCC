@@ -1,11 +1,8 @@
-package state;
-
-import clases.usuario;
-import clases.vuelo;
+package clases;
 
 public class cancelled extends estadoState{
 
-    public cancelled(clases.vuelo vuelo){
+    public cancelled(vuelo vuelo){
         super(vuelo);
     }
 
@@ -23,4 +20,6 @@ public class cancelled extends estadoState{
     public void onTiempo() {
 
     }
+
+
 }

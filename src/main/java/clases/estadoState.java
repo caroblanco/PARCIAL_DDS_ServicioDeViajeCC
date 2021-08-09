@@ -1,9 +1,8 @@
-package state;
+package clases;
 import clases.usuario;
 import clases.vuelo;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-
 
 public abstract class estadoState {
     vuelo vuelo;
@@ -13,7 +12,9 @@ public abstract class estadoState {
     }
 
     public abstract void onDelayed();
+
     public abstract void onCancelled();
+
     public abstract void onTiempo();
 
     public String obtenerTiempoActual(){

@@ -8,6 +8,7 @@ public class usuario {
     String nombreUsuario;
     String contrasenia;
 
+
     public String getMail() {
         return mail;
     }
@@ -21,5 +22,11 @@ public class usuario {
         this.contrasenia = contrasenia;
         this.mail = mail;
     }
+
+    public String getUsuario(){ return nombreUsuario;}
+
+    public String getContrasenia(){return contrasenia;}
+
+
 
 }
