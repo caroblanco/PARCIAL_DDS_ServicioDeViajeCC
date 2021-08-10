@@ -19,6 +19,7 @@ public class onTime extends estadoState{
 
     @Override
     public void onTiempo() {
+        int comparacion = 1;
         //String tiempoActual = this.obtenerTiempoActual();
         String horarioVuelo = vuelo.getHorario();
         String fechaVuelo = vuelo.getFecha();
