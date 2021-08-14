@@ -18,4 +18,6 @@ public class Airport {
     public boolean tieneIata(String iataCiudad) {
         return city_iata_code.equalsIgnoreCase(iataCiudad);
     }
+    public String getAirport_name(){return airport_name;}
+    public String getIata_code(){return iata_code;}
 }

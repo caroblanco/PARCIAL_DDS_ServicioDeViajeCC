@@ -15,4 +15,7 @@ public class Ciudad {
     public String getIata_code() {
         return iata_code;
     }
+    public String getTimezone() {
+        return timezone;
+    }
 }

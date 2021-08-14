@@ -5,4 +5,6 @@ public class Flight {
      public String iata;
      public String icao;
      public String codeshare;
+
+     public String getNumber(){return number;}
 }

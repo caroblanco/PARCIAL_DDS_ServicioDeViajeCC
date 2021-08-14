@@ -23,8 +23,12 @@ public class apiAviationStack {
     private Retrofit retrofit;
 
     //String apiKey = "4b434e3592c9cf33528b2e0bc336df73"; //ESTA MURIO POR ESTE MES
-    String apiKey = "b172ecdda2995d41f66cee4f9f99bbe6";
+    //String apiKey = "b172ecdda2995d41f66cee4f9f99bbe6";//ESTA MURIO POR ESTE MES
     //String apiKey = "541f2ce5ead8eb232fd37fdc05c5e059";
+    //String apiKey = "50514ec596a64cee106654d5c9c0a661";
+    //String apiKey = "4f8dccbdc68f8572776718e0481acc8d";
+    String apiKey = "ab467150dc239196dd65dde8a0d6740d";
+    //String apiKey = "458472f570b0ef0b645a4cdb91f0db47";
 
     public apiAviationStack(){
         this.retrofit = new Retrofit.Builder()
@@ -39,7 +43,7 @@ public class apiAviationStack {
         }
         return instancia;
     }
-
+/*
     public respuesta dameVuelo(String origen, String destino) throws IOException {
 
         String origen_iata = this.dameIata(origen);
@@ -51,13 +55,17 @@ public class apiAviationStack {
 
         return responseVuelos.body();
     }
+*/
+    public respuesta dameVuelo(Airport origen, Airport destino) throws IOException {
 
-    public String dameIata(String ciudad) throws IOException {
-        //List<Ciudad> ciudades = this.dameTodasLasCiudades();
+        String origen_iata = origen.getIata_code();
+        String destino_iata = destino.getIata_code();
 
-        Ciudad miCiudad = this.buscarCiudad(ciudad);
+        apiService flightService = this.retrofit.create(apiService.class);
+        Call<respuesta> requestVuelo = flightService.vuelos(apiKey,origen_iata, destino_iata, "scheduled");
+        Response<respuesta> responseVuelos = requestVuelo.execute();
 
-        return miCiudad.getIata_code();
+        return responseVuelos.body();
     }
 
     public List<Ciudad> dameCiudades(int offset) throws IOException{
@@ -99,48 +107,41 @@ public class apiAviationStack {
         return ciudades;
     }
 
-    public Ciudad buscarCiudad(String nombreCiudad) throws IOException{
+    public List <Ciudad> buscarCiudades(String nombreCiudad) throws IOException{
         int total = this.dameTotalCiudades();
-        int i =0;
-        boolean laEncontre = false;
-        Ciudad ciudad = null;
+        //boolean laEncontre = false;
+        //Ciudad ciudad = null;
+        List<Ciudad> ciudadesConNombre = new ArrayList<>();
 
-        while(!laEncontre){
-            List<Ciudad>ciudades = this.dameCiudades(i);
-            List<Ciudad>ciudadesFiltradas = ciudades.stream().filter(unaCiudad -> unaCiudad.city_name.equalsIgnoreCase(nombreCiudad)).collect(Collectors.toList());
+        for(int i = 0; i <= total - 100; i+=100) {
+            List<Ciudad> ciudades = this.dameCiudades(i);
+            List<Ciudad> ciudadesFiltradas = ciudades.stream().filter(unaCiudad -> unaCiudad.city_name.equalsIgnoreCase(nombreCiudad)).collect(Collectors.toList());
 
-            if(! ciudadesFiltradas.isEmpty()){
-                ciudad = ciudadesFiltradas.get(0);
-                laEncontre=true;
+            if (!ciudadesFiltradas.isEmpty()) {
+                ciudadesConNombre.addAll(ciudadesFiltradas);
             }
-
-            i+=100;
         }
 
-        return ciudad;
+        return ciudadesConNombre;
 
     }
 
-    public Airport buscarAeropuerto(String nombreCiudad) throws IOException{
+    public List <Airport> buscarAeropuertos(Ciudad ciudad) throws IOException{
         int total = this.dameTotalAeropuertos();
-        int i =0;
-        boolean laEncontre = false;
-        Airport aeropuerto = null;
-        String iataCiudad = this.dameIata(nombreCiudad);
+        String iataCiudad = ciudad.getIata_code();
+        List <Airport> aeropuertosElegidos = new ArrayList<>();
 
-        while(!laEncontre){
+        for(int i =0; i<=total ; i+=100){
             List<Airport>aeropuertos = this.dameAeropuertos(i);
             List<Airport>aeropuertosFiltrados = aeropuertos.stream().filter(airport -> airport.tieneIata(iataCiudad)).collect(Collectors.toList());
 
             if(! aeropuertosFiltrados.isEmpty()){
-                aeropuerto = aeropuertosFiltrados.get(0);
-                laEncontre=true;
+                aeropuertosElegidos.addAll(aeropuertosFiltrados);
             }
-
-            i+=100;
+            if(aeropuertosElegidos.size() == 2)break;
         }
 
-        return aeropuerto;
+        return aeropuertosElegidos;
 
     }
 

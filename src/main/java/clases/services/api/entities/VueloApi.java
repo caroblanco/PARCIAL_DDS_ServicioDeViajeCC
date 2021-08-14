@@ -11,7 +11,7 @@ public class VueloApi {
     public Aircraft aircraft;
     public Live live;
 
+    public String getFlight_date(){return flight_date;}
 
-
-
+    public String getFlight_number(){return flight.getNumber();}
 }
