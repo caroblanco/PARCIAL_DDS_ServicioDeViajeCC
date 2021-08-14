@@ -29,6 +29,16 @@ public class apiAviationStack {
     //String apiKey = "4f8dccbdc68f8572776718e0481acc8d";
     String apiKey = "ab467150dc239196dd65dde8a0d6740d";
     //String apiKey = "458472f570b0ef0b645a4cdb91f0db47";
+    //String apiKey = "d112c93bb0cb62f964988ca032e9314b";
+    //String apiKey = "8552d194bf1d1893a4eb704b2c98d300";
+    //String apiKey = "5d4f50e60e9c71c9af4855b1a4fedd37";
+    //String apiKey = "f3bb42f55d541626b6574395422675c1";
+    //String apiKey = "17daaa1891d355f36daeb5342ecf3e83";
+    //String apiKey = "498595cf0e93153d3f4ef96dd35572fd";
+    //String apiKey = "72f06b104cfdc3f6d6fc1511e6f5d932";
+    //String apiKey = "18b35bcff9029d15e3b8a6462fae64a7";
+    //String apiKey = "79737cbad367383694748dcc0f9d00e6";
+    //String apiKey = "02c360e1b37a75dba3b5e347d1b972a3";
 
     public apiAviationStack(){
         this.retrofit = new Retrofit.Builder()

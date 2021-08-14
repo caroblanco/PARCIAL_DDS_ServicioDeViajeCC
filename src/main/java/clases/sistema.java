@@ -11,8 +11,16 @@ public class sistema {
     public sistema() {
     }
 
-    public boolean validarContrasenia(String usuario, String contrasenia){
+    public static void agregarUsuario(usuario usuarioNuevo){
+        usuarios.add(usuarioNuevo);
+    }
+
+    public static boolean validarContrasenia(String usuario, String contrasenia){
         return validador.validarContrasenia(usuario, contrasenia);
+    }
+
+    public static boolean validarUsuarioRegistrar(String usuario){
+        return usuarios.stream().anyMatch(unU -> unU.getUsuario().equalsIgnoreCase(usuario));
     }
 
     public static List<vuelo> buscarVuelos(String destinoInicial, String destinoFinal){
@@ -51,5 +59,4 @@ public class sistema {
 
         pasajero.get(0).modificarAsiento(numItinerario, idVuelo, nuevoAsiento);
     }
-
 }

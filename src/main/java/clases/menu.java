@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 
 public class menu {
     static apiAviationStack api = apiAviationStack.getInstancia();
-    usuario unUsuario;
-    int opcion;
-    String idVuelo;
-    boolean verificado = false;
+    private static int opcion=1;
+    static usuario unUsuario;
+    static String idVuelo;
+    static boolean verificado = false;
 
-    public void iniciar() throws IOException{
+    public static void main(String[] args) throws IOException{
         Scanner scannerInt = new Scanner(System.in);
         Scanner scannerString = new Scanner(System.in);
 
@@ -41,6 +41,9 @@ public class menu {
 
                         vuelo vuelo = sistema.buscarVueloPorID(idVuelo);
                         System.out.println(vuelo.getEstado());
+
+                        //BUSCAR VUELO EN LA API!!!
+
                         break;
                     case 2:
                         while(!verificado){
@@ -53,35 +56,57 @@ public class menu {
                             verificado = sistema.validarUsuario(usuario,contra);
 
                             if(!verificado){
-                                System.out.println("intente de nuevo");
+                                System.out.println("Intente de nuevo");
                             }else{
                                 unUsuario = sistema.buscarUsuario(usuario);
                                 System.out.println("se inicio correctamente la sesion");
                             }
                         }
 
-                        this.menuIniciado();
+                        menu.menuIniciado();
 
                         break;
                     case 3:
+                        System.out.println("Bienvenido! Cree un usuario");
 
+                        System.out.println("Ingrese un nombre de usuario: ");
+                        String usuario= scannerString.nextLine();
+                        while(sistema.validarUsuarioRegistrar(usuario)) {
+                            System.out.println("Nombre de usuario no valido, vuelva a intentarlo");
+                            usuario = scannerString.nextLine();
+                        }
+                        System.out.println("Ingrese Contrasena");
+                        String contrasenaProvisoria = scannerString.nextLine();
+                        while(sistema.validarContrasenia(usuario,contrasenaProvisoria)) {
+                            System.out.println("Contrasena no valida, vuelva a intentarlo");
+                            contrasenaProvisoria = scannerString.nextLine();
+                        }
+
+                        System.out.println("Ingrese un mail");
+                        String mail = scannerString.nextLine();
+
+                        usuario miUsuario = new usuario(usuario, contrasenaProvisoria, mail);
+                        sistema.agregarUsuario(miUsuario);
+                        unUsuario=miUsuario;
+
+                        System.out.println("Usuario creado exitosamente!");
+                        menu.menuIniciado();
                         break;
 
                     case 0:
-
+                        System.out.println("Usuario creado exitosamente!");
                         break;
-
                 }
             }catch (InputMismatchException e) {
                 System.out.println("Debes insertar un número");
                 scannerInt.next();
+            }
         }
     }
-}
-    public void menuIniciado() throws IOException{
+    public static void menuIniciado() throws IOException{
         Scanner scannerInt = new Scanner(System.in);
         Scanner scannerString = new Scanner(System.in);
-        boolean valido = false;
+        boolean valido;
 
         while(opcion != 0){
 
@@ -97,16 +122,9 @@ public class menu {
             switch(opcion){
                 case 0:
                     System.out.println("Se ha cerrado la sesion");
-                    this.iniciar();
                     break;
 
                 case 1:
-                    System.out.println("Ingrese el origen");
-                    String origen = scannerString.nextLine();
-
-                    System.out.println("Ingrese el destino");
-                    String destino = scannerString.nextLine();
-
                     System.out.println("Que tipo de vuelo desea: ");
                     System.out.println("1. Directo");
                     System.out.println("2. Con escala");
@@ -114,28 +132,27 @@ public class menu {
 
                     switch (opcion){
                         case 1:
-                            //
+                            Ciudad ciudadOrigen = menu.elegirCiudad("origen");
+                            Airport aeropuertoOrigen = menu.elegirAeropuerto("origen", ciudadOrigen);
+
+                            Ciudad ciudadDestino = menu.elegirCiudad("destino");
+                            Airport aeropuertoDestino = menu.elegirAeropuerto("destino", ciudadDestino);
+
+                            List<VueloApi> vuelos = api.dameVuelo(aeropuertoOrigen,aeropuertoDestino).getListaDeVuelos();
+
+                            if(vuelos.isEmpty()){
+                                System.out.println("No existe un vuelo con esos parametros");
+                            }else{
+                                VueloApi vuelo = menu.elegirFechas(vuelos);
+                                System.out.println("Ha seleccionado el vuelo numero: "+vuelo.getFlight_number());
+                                //AGREGAR VUELO NUEVO A LISTA DE VUELOS
+                                //AGREGAR VUELO AL PASAJERO
+                            }
                             break;
                         case 2:
-                            //
+                            System.out.println("trolo");//
                             break;
                     }
-
-                        Ciudad ciudadOrigen = mainTrucho.elegirCiudad("origen");
-                        Airport aeropuertoOrigen = mainTrucho.elegirAeropuerto("origen", ciudadOrigen);
-
-                        Ciudad ciudadDestino = mainTrucho.elegirCiudad("destino");
-                        Airport aeropuertoDestino = mainTrucho.elegirAeropuerto("destino", ciudadDestino);
-
-                        List<VueloApi> vuelos = api.dameVuelo(aeropuertoOrigen,aeropuertoDestino).getListaDeVuelos();
-
-                        if(vuelos.isEmpty()){
-                            System.out.println("No existe un vuelo con esos parametros");
-                        }else{
-                            VueloApi vuelo = mainTrucho.elegirFechas(vuelos);
-                            System.out.println("Ha seleccionado el vuelo numero: "+vuelo.getFlight_number());
-                        }
-
                     break;
                 case 2:
                     valido = false;
@@ -178,7 +195,6 @@ public class menu {
             System.out.println("Debes insertar un número");
             scannerInt.next();
         }
-
     }
 
     public static VueloApi elegirFechas(List <VueloApi> vuelos) throws IOException{
