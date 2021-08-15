@@ -15,4 +15,6 @@ public class Arrival {
     public String actual;
     public String estimated_runway;
     public String actual_runway;
+
+    public String getIata(){return iata;}
 }

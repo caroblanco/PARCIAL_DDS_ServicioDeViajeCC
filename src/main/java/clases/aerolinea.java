@@ -1,9 +1,12 @@
 package clases;
 
+import clases.services.api.entities.VueloApi;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class aerolinea {
 
@@ -36,7 +39,43 @@ public class aerolinea {
         return (List<pasajero>) pasajeros.stream().filter(unP -> unP.tieneItinerario(numItinerario));
     }
 
+    public boolean existePasajero(String documento){
+        return pasajeros.stream().anyMatch(unP -> unP.getDocumento().equalsIgnoreCase(documento));
+    }
 
+    public boolean existeVuelo(String idVuelo){
+        return vuelos.stream().anyMatch(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo));
+    }
+
+    public void agregarItinerarioAPasajero(VueloApi unVuelo, String documento, int tarifa){
+        vuelo vueloNuestro;
+        String id = unVuelo.flight.number;
+
+        if (aerolinea.existeVuelo(id)){
+            vueloNuestro = sistema.buscarVueloPorID(id);
+        }
+        else{
+            vueloNuestro = aerolinea.crearVuelo(unVuelo, tarifa);
+        }
+        //TODO QUEDAMOS ACA REYNASSSSSSS, FALTA CREAR EL ITINERARIO CON EL WELO :D
+
+        pasajero pasajero = aerolinea.buscarPasajeroPorDocumento(documento);
+    }
+
+    public vuelo crearVuelo(VueloApi vuelo, int tarifa){
+        String id = vuelo.flight.number;
+        String origen = vuelo.getOrigen();
+        String destino = vuelo.getDestino();
+        String fecha = vuelo.getFlight_date();
+        String horario = vuelo.getTime();
+        int delay = vuelo.getDelay();
+        vuelo vueloCreado = new vuelo(id, 180, origen,destino, tarifa, fecha, horario, delay);
+        return vueloCreado;
+    }
+
+    public pasajero buscarPasajeroPorDocumento(String documento){
+        return pasajeros.stream().filter(unP -> unP.getDocumento().equalsIgnoreCase(documento)).collect(Collectors.toList()).get(0);
+    }
 }
 
 

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class vuelo {
     String idVuelo;
-    int asientosTotales;
+    int asientosTotales = 180;
     String origen;
     String destino;
     int tarifa;
@@ -13,9 +13,10 @@ public class vuelo {
     String horario;
     estadoState estado;
     List<asiento> asientos = new ArrayList<>();
+    int delay;
 
 
-    public vuelo(String id, int asientosTotales, String origen, String destino,int tarifa, String dia, String horario, estadoState estadoVuelo){
+    public vuelo(String id, int asientosTotales, String origen, String destino,int tarifa, String dia, String horario,  int delay){
         this.idVuelo = id;
         this.asientosTotales=asientosTotales;
         this.origen=origen;
@@ -23,8 +24,19 @@ public class vuelo {
         this.tarifa=tarifa;
         this.dia=dia;
         this.horario=horario;
-        this.estado = estadoVuelo;
+        this.estado = this.setearEstado();
         this.crearAsientos(asientosTotales);
+        this.delay = delay;
+    }
+
+    public estadoState setearEstado(){
+        estadoState estado;
+        if(delay >0){
+            estado = new delayed(this);
+        }else{
+            estado = new onTime(this);
+        }
+        return estado;
     }
 
     public void crearAsientos(int asientosTotales){

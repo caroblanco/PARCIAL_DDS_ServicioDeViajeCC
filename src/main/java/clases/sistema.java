@@ -1,5 +1,7 @@
 package clases;
 
+import clases.services.api.entities.VueloApi;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,4 +61,14 @@ public class sistema {
 
         pasajero.get(0).modificarAsiento(numItinerario, idVuelo, nuevoAsiento);
     }
+
+    public static boolean existePasajero(String documento){
+        return aerolinea.existePasajero(documento);
+    }
+
+    public static void agregarItinerarioAPasajero(VueloApi vuelo, String documento, int tarifa){
+
+        aerolinea.agregarItinerarioAPasajero(vuelo,documento, tarifa);
+    }
+
 }

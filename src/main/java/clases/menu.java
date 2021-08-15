@@ -145,8 +145,9 @@ public class menu {
                             }else{
                                 VueloApi vuelo = menu.elegirFechas(vuelos);
                                 System.out.println("Ha seleccionado el vuelo numero: "+vuelo.getFlight_number());
-                                //AGREGAR VUELO NUEVO A LISTA DE VUELOS
-                                //AGREGAR VUELO AL PASAJERO
+                                int tarifa = 0;
+                                menu.crearPasajero(vuelo, unUsuario, tarifa);
+                                //VEMOS
                             }
                             break;
                         case 2:
@@ -195,6 +196,27 @@ public class menu {
             System.out.println("Debes insertar un número");
             scannerInt.next();
         }
+    }
+
+    public static void crearPasajero(VueloApi vuelo, usuario unUsuario, int tarifa){
+        Scanner scannerString = new Scanner(System.in);
+        Scanner scannerInt = new Scanner(System.in);
+
+        System.out.println("Para continuar, ingrese su nombre");
+        String nombre = scannerString.nextLine();
+        System.out.println("Ingrese su numero de documento");
+        String documento = scannerString.nextLine();
+        System.out.println("Ingrese su numero de telefono");
+        String telefono = scannerString.nextLine();
+
+        if(sistema.existePasajero(documento)){
+            sistema.agregarItinerarioAPasajero(vuelo,documento, tarifa);
+        }else{
+
+        }
+
+        //AGREGAR VUELO NUEVO A LISTA DE VUELOS
+        //AGREGAR VUELO AL PASAJERO
     }
 
     public static VueloApi elegirFechas(List <VueloApi> vuelos) throws IOException{

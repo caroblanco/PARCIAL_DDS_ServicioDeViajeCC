@@ -14,4 +14,12 @@ public class VueloApi {
     public String getFlight_date(){return flight_date;}
 
     public String getFlight_number(){return flight.getNumber();}
+
+    public String getTime(){ return departure.getTimeDeparture();}
+
+    public String getOrigen(){ return departure.getIata();}
+    public String getDestino(){ return arrival.getIata();}
+
+    public int getDelay(){return departure.getDelay();}
+
 }

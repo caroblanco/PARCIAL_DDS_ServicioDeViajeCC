@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 public class pasajero {
     String nombre;
     String telefono;
+    String documento;
     notificarStrategy formaNotif;
     tarjeta tarjeta;
     usuario usuario;
@@ -56,4 +57,6 @@ public class pasajero {
     public boolean tieneItinerario(int numItinerario){
         return itinerarios.stream().anyMatch(unIt -> unIt.getNumItinerario() == numItinerario);
     }
+
+    public String getDocumento(){ return documento;}
 }
