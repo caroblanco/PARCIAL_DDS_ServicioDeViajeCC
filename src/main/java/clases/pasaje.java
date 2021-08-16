@@ -3,15 +3,26 @@ package clases;
 public class pasaje extends itinerario {
     vuelo vuelo;
     clase clase;
-    public int tarifa;
+    public double tarifa;
     asiento asiento;
 
-    public int getTarifa() {
+    public pasaje(vuelo vuelo, clase clase, double tarifa, asiento asiento,pasajero pasajero) {
+        this.vuelo = vuelo;
+        this.clase = clase;
+        this.tarifa = tarifa;
+        this.asiento = asiento;
+        this.origenInicial = vuelo.getOrigen();
+        this.destinoFinal = vuelo.getDestino();
+        //TODO this.numItinerario= random
+        this.pasajero = pasajero;
+    }
+
+    public double getTarifa() {
         return tarifa;
     }
 
     @Override
-    public int tarifaTotal(){
+    public double tarifaTotal(){
         return tarifa;
     }
 

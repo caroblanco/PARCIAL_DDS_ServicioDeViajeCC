@@ -6,7 +6,7 @@ public abstract class itinerario {
     String destinoFinal;
     pasajero pasajero;
 
-    public abstract int tarifaTotal();
+    public abstract double tarifaTotal();
 
     public int getNumItinerario() {
         return numItinerario;

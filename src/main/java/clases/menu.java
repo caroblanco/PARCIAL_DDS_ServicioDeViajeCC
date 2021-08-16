@@ -4,7 +4,10 @@ import clases.services.api.apiAviationStack;
 import clases.services.api.entities.Airport;
 import clases.services.api.entities.Ciudad;
 import clases.services.api.entities.VueloApi;
-import clases.services.api.mainTrucho;
+import strategy.email;
+import strategy.notificarStrategy;
+import strategy.sms;
+import strategy.whatsapp;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -12,12 +15,15 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static clases.clase.*;
+
 public class menu {
     static apiAviationStack api = apiAviationStack.getInstancia();
     private static int opcion=1;
     static usuario unUsuario;
     static String idVuelo;
     static boolean verificado = false;
+    static Sistema sistema = Sistema.getInstancia();
 
     public static void main(String[] args) throws IOException{
         Scanner scannerInt = new Scanner(System.in);
@@ -25,7 +31,7 @@ public class menu {
 
         while(opcion != 0){
 
-            System.out.println("1. Ver estado vuelo");
+            System.out.println("1. Ver el estado de un vuelo");
             System.out.println("2. Iniciar Sesion");
             System.out.println("3. Registrarse");
             System.out.println("0. Salir");
@@ -43,7 +49,7 @@ public class menu {
                         System.out.println(vuelo.getEstado());
 
                         //BUSCAR VUELO EN LA API!!!
-
+                        menu.main(args);
                         break;
                     case 2:
                         while(!verificado){
@@ -62,9 +68,7 @@ public class menu {
                                 System.out.println("se inicio correctamente la sesion");
                             }
                         }
-
                         menu.menuIniciado();
-
                         break;
                     case 3:
                         System.out.println("Bienvenido! Cree un usuario");
@@ -75,9 +79,9 @@ public class menu {
                             System.out.println("Nombre de usuario no valido, vuelva a intentarlo");
                             usuario = scannerString.nextLine();
                         }
-                        System.out.println("Ingrese Contrasena");
+                        System.out.println("Usuario valido! ahora ingrese su contrasena");
                         String contrasenaProvisoria = scannerString.nextLine();
-                        while(sistema.validarContrasenia(usuario,contrasenaProvisoria)) {
+                        while(!sistema.validarContrasenia(usuario,contrasenaProvisoria)) {
                             System.out.println("Contrasena no valida, vuelva a intentarlo");
                             contrasenaProvisoria = scannerString.nextLine();
                         }
@@ -92,13 +96,12 @@ public class menu {
                         System.out.println("Usuario creado exitosamente!");
                         menu.menuIniciado();
                         break;
-
                     case 0:
                         System.out.println("Usuario creado exitosamente!");
                         break;
                 }
             }catch (InputMismatchException e) {
-                System.out.println("Debes insertar un número");
+                System.out.println("Debe insertar un número");
                 scannerInt.next();
             }
         }
@@ -108,115 +111,204 @@ public class menu {
         Scanner scannerString = new Scanner(System.in);
         boolean valido;
 
-        while(opcion != 0){
+        while(opcion != 0) {
 
             System.out.println("1. Comprar itinerario");
-            System.out.println("2. Cancelar Itinerario");
-            System.out.println("3. Modificar Asiento de su vuelo");
+            System.out.println("2. Cancelar itinerario");
+            System.out.println("3. Modificar asiento de un vuelo");
             System.out.println("0. Salir");
-    }
-        try{
-            System.out.println("Seleccione una opcion:");
-            opcion = scannerInt.nextInt();
 
-            switch(opcion){
-                case 0:
-                    System.out.println("Se ha cerrado la sesion");
-                    break;
+            try {
+                System.out.println("Seleccione una opcion:");
+                opcion = scannerInt.nextInt();
 
-                case 1:
-                    System.out.println("Que tipo de vuelo desea: ");
-                    System.out.println("1. Directo");
-                    System.out.println("2. Con escala");
-                    int opcion = scannerInt.nextInt();
+                switch (opcion) {
+                    case 0:
+                        System.out.println("Se ha cerrado la sesion");
+                        break;
 
-                    switch (opcion){
-                        case 1:
-                            Ciudad ciudadOrigen = menu.elegirCiudad("origen");
-                            Airport aeropuertoOrigen = menu.elegirAeropuerto("origen", ciudadOrigen);
+                    case 1:
+                        System.out.println("Que tipo de vuelo desea: ");
+                        System.out.println("1. Directo");
+                        System.out.println("2. Con escala");
+                        int opcion = scannerInt.nextInt();
 
-                            Ciudad ciudadDestino = menu.elegirCiudad("destino");
-                            Airport aeropuertoDestino = menu.elegirAeropuerto("destino", ciudadDestino);
+                        switch (opcion) {
+                            case 1:
+                                Ciudad ciudadOrigen = menu.elegirCiudad("origen");
+                                Airport aeropuertoOrigen = menu.elegirAeropuerto("origen", ciudadOrigen);
 
-                            List<VueloApi> vuelos = api.dameVuelo(aeropuertoOrigen,aeropuertoDestino).getListaDeVuelos();
+                                Ciudad ciudadDestino = menu.elegirCiudad("destino");
+                                Airport aeropuertoDestino = menu.elegirAeropuerto("destino", ciudadDestino);
 
-                            if(vuelos.isEmpty()){
-                                System.out.println("No existe un vuelo con esos parametros");
+                                List<VueloApi> vuelos = api.dameVuelo(aeropuertoOrigen, aeropuertoDestino).getListaDeVuelos();
+
+                                if (vuelos.isEmpty()) {
+                                    System.out.println("No existe un vuelo con esos parametros");
+                                } else {
+                                    VueloApi vuelo = menu.elegirFechas(vuelos);
+                                    System.out.println("Ha seleccionado el vuelo numero: " + vuelo.getFlight_number());
+
+                                    int tarifaBase = 0;
+                                    double tarifa = 0;
+                                    pasajero pasajero = menu.crearPasajero(vuelo);
+
+                                    vuelo vueloNuestro = sistema.crearNuestroVuelo(vuelo, tarifaBase, pasajero);
+                                    asiento asiento = menu.seleccionarAsiento(vueloNuestro, pasajero);
+                                    int numAsiento = asiento.getNumAsiento();
+                                    clase clase = null;
+
+                                    if (numAsiento <= 20) {
+                                        tarifa = tarifaBase * 1.20;
+                                        clase = PRIMERA_CLASE;
+                                    } else if (numAsiento <= 50) {
+                                        tarifa = tarifaBase * 1.15;
+                                        clase = BUSSINESS;
+                                    } else if (numAsiento <= 180) {
+                                        tarifa = tarifaBase;
+                                        clase = ECONOMY;
+                                    }
+
+                                    itinerario itinerario = new pasaje(vueloNuestro, clase, tarifa, asiento, pasajero);
+                                    pasajero.agregarItinerario(itinerario);
+                                }
+                                break;
+                            case 2:
+                                //TODO CON ESCALAS, VER Q MIERDA HACEMOS
+                                break;
+                        }
+                        menu.menuIniciado();
+                        break;
+                    case 2:
+                        valido = false;
+                        while (!valido) {
+
+                            System.out.println("Ingrese su numero de documento");
+                            String documento = scannerString.nextLine();
+                            pasajero pasajero = sistema.buscarPasajeroPorDocumento(documento);
+
+                            if(pasajero!=null){
+                                System.out.println("Ingrese el numero de itinerario");
+                                int numItinerario = scannerInt.nextInt();
+
+                                if (pasajero.existeItinerario(numItinerario)){
+                                    pasajero.cancelarItinerario(numItinerario);
+                                    valido = true;
+                                } else {
+                                    System.out.println("Itinerario incorrecto, vuelva a intentarlo");
+                                }
                             }else{
-                                VueloApi vuelo = menu.elegirFechas(vuelos);
-                                System.out.println("Ha seleccionado el vuelo numero: "+vuelo.getFlight_number());
-                                int tarifa = 0;
-                                menu.crearPasajero(vuelo, unUsuario, tarifa);
-                                //VEMOS
-                            }
-                            break;
-                        case 2:
-                            System.out.println("trolo");//
-                            break;
-                    }
-                    break;
-                case 2:
-                    valido = false;
-                        while(!valido){
-
-                            System.out.println("Ingrese el numero de itinerario");
-                            int numItinerario = scannerInt.nextInt();
-
-                            if(sistema.buscarPasajeroPorItinerario(numItinerario).size() != 0 ){
-                                sistema.cancelarItinerario(numItinerario);
-                                valido = true;
-                            }else{
-                                System.out.println("Itinerario incorrecto, ingrese otro numero");
+                                System.out.println("No se ha encontrado el pasajero, intente de nuevo");
                             }
                         }
-                    break;
-                case 3:
-                    valido = false;
+                        menu.menuIniciado();
+                        break;
+                    case 3:
+                        valido = false;
 
-                    while(!valido){
+                        while (!valido) {
 
-                        System.out.println("Ingrese el numero de itinerario");
-                        int numItinerario = scannerInt.nextInt();
+                            System.out.println("Ingrese su numero de documento");
+                            String documento = scannerString.nextLine();
+                            pasajero pasajero = sistema.buscarPasajeroPorDocumento(documento);
 
-                        if(sistema.buscarPasajeroPorItinerario(numItinerario).size() != 0 ){
-                            System.out.println("Ingrese el id del vuelo");
-                            String idVuelo = scannerString.nextLine();
-                            System.out.println("Ingrese el nuevo asiento");
+                            if (pasajero!=null) {
 
-                            int nuevoAsiento = scannerInt.nextInt();
-                            sistema.modificarAsiento(numItinerario, idVuelo, nuevoAsiento);
-                            valido = true;
-                        }else{
-                            System.out.println("Itinerario incorrecto, ingrese otro numero");
+                                System.out.println("Ingrese el numero de itinerario");
+                                int numItinerario = scannerInt.nextInt();
+
+                                if(pasajero.existeItinerario(numItinerario)){
+
+                                    System.out.println("Ingrese el id del vuelo");
+                                    String idVuelo = scannerString.nextLine();
+                                    vuelo vuelo = sistema.buscarVueloPorID(idVuelo);
+
+                                    int nuevoAsiento = menu.mostrarAsientosLibresVuelo(vuelo);
+
+                                    if (sistema.asientoLibre(idVuelo, nuevoAsiento)) {
+                                        sistema.modificarAsiento(numItinerario, idVuelo, nuevoAsiento);
+                                        valido = true;
+                                    } else {
+                                        System.out.println("Ese asiento no puede ocuparse, seleccione otro");
+                                    }
+                                }else{
+                                    System.out.println("No se ha encontrado el itinerario, ingrese la informacion nuevamente");
+                                }
+
+                            }else {
+                                System.out.println("No se ha encontrado el pasajero, ingrese la informacion nuevamente");
+                            }
                         }
-                    }
-                    break;
+                        menu.menuIniciado();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Debes insertar un número");
+                scannerInt.next();
             }
-        }catch (InputMismatchException e) {
-            System.out.println("Debes insertar un número");
-            scannerInt.next();
         }
     }
 
-    public static void crearPasajero(VueloApi vuelo, usuario unUsuario, int tarifa){
+    public static pasajero crearPasajero(VueloApi vuelo){
         Scanner scannerString = new Scanner(System.in);
         Scanner scannerInt = new Scanner(System.in);
+        pasajero pasajero;
 
-        System.out.println("Para continuar, ingrese su nombre");
-        String nombre = scannerString.nextLine();
         System.out.println("Ingrese su numero de documento");
         String documento = scannerString.nextLine();
-        System.out.println("Ingrese su numero de telefono");
-        String telefono = scannerString.nextLine();
-
-        if(sistema.existePasajero(documento)){
-            sistema.agregarItinerarioAPasajero(vuelo,documento, tarifa);
+        if(sistema.hayPasajeros() && sistema.existePasajero(documento)){
+            pasajero = sistema.buscarPasajeroPorDocumento(documento);
         }else{
+            System.out.println("Para continuar, ingrese su nombre");
+            String nombre = scannerString.nextLine();
+            System.out.println("Ingrese su numero de telefono");
+            String telefono = scannerString.nextLine();
+            System.out.println("Seleccione la forma de notificacion que prefiera");
+            System.out.println("1- EMAIL");
+            System.out.println("2- WHATSAPP");
+            System.out.println("3- SMS");
+            int opcion = scannerInt.nextInt();
 
+            notificarStrategy formaNotif=null;
+            switch (opcion){
+                case 1:
+                    formaNotif = new email();
+                    break;
+                case 2:
+                    formaNotif = new whatsapp();
+                    break;
+                case 3:
+                    formaNotif = new sms();
+                    break;
+            }
+            pasajero = sistema.crearPasajero(documento,nombre,telefono,unUsuario, formaNotif);
         }
+        return pasajero;
+    }
 
-        //AGREGAR VUELO NUEVO A LISTA DE VUELOS
-        //AGREGAR VUELO AL PASAJERO
+    public static asiento seleccionarAsiento(vuelo vuelo,pasajero pasajero){
+
+        System.out.println("Los asientos numerados del 1 al 20 son primera clase, que aniade a la tarifa base un 20% extra");
+        System.out.println("Los asientos numerados del 21 al 50 son clase business, que aniade a la tarifa base un 15% extra");
+        System.out.println("Los asientos numerados del 51 al 180 son clase economy, que no aniade nada a la tarifa base");
+
+        int asientoSeleccionado = menu.mostrarAsientosLibresVuelo(vuelo);
+        vuelo.ocuparAsiento(asientoSeleccionado,pasajero);
+
+        return vuelo.getAsientoX(asientoSeleccionado);
+    }
+
+    public static int mostrarAsientosLibresVuelo(vuelo vuelo){
+        List<asiento> asientos = vuelo.getAsientos();
+        Scanner scannerInt = new Scanner(System.in);
+
+        System.out.println("Seleccione el numero de asiento que desea");
+        for(int i=1; i<=180;i++){
+            if(asientos.get(i).estaDisponible()){
+                System.out.println(asientos.get(i).getNumAsiento());
+            }
+        }
+        return scannerInt.nextInt();
     }
 
     public static VueloApi elegirFechas(List <VueloApi> vuelos) throws IOException{
@@ -230,7 +322,7 @@ public class menu {
 
         if(vuelosSalida.isEmpty()){
             System.out.println("NO EXISTE VUELO");
-            return null;
+            return menu.elegirFechas(vuelos);
         }else{
             System.out.println("Los vuelos encontrados fueron los siguientes: ");
             int contador=1;
@@ -258,7 +350,7 @@ public class menu {
 
         if(ciudades.isEmpty()){
             System.out.println("NO HAY CIUDADES DISPONIBLES");
-            return null;
+            return menu.elegirCiudad(que);
         }else{
             System.out.println("Las ciudades disponibles son: ");
             for(int i = 0; i< ciudades.size(); i++){
@@ -283,7 +375,7 @@ public class menu {
 
         if(aeropuertos.isEmpty()){
             System.out.println("NO HAY AEROPUERTOS DISPONIBLES");
-            return null;
+            return menu.elegirAeropuerto(que,ciudad);
         }else{
             System.out.println("Los aeropuertos disponibles para el " + que + " son: ");
             for(int i = 0; i< aeropuertos.size(); i++){
@@ -297,4 +389,5 @@ public class menu {
             return aeropuertos.get(indice-1);
         }
     }
+
 }

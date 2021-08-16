@@ -13,21 +13,25 @@ public class pasajero {
     usuario usuario;
     List<itinerario> itinerarios = new ArrayList<>();
 
-    public pasajero(String nombre, String telefono, notificarStrategy formaNotif, tarjeta tarjeta) {
+    public pasajero(String nombre, String telefono, String documento, notificarStrategy formaNotif, usuario unUsuario) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.formaNotif = formaNotif;
-        this.tarjeta = tarjeta;
+        this.usuario = unUsuario;
+        this.documento = documento;
     }
+
+    public boolean existeItinerario(int numItinerario){
+        return itinerarios.stream().anyMatch(unI -> unI.getNumItinerario() == numItinerario);
+    }
+
+    public String getNombre(){return nombre;}
 
     public void serNotificado(String mensaje){
         formaNotif.notificar(mensaje, telefono, usuario.getMail());
     }
 
-    public void comprarItinerario(String origen, String destino){
-        List <vuelo> vuelosPosibles = sistema.buscarVuelos(origen,destino);
-
-    }
+    public void agregarItinerario(itinerario itinerario){itinerarios.add(itinerario);}
 
     public void cancelarItinerario(int numItinerario){
         itinerario itinerario = this.buscarItinerario(numItinerario);

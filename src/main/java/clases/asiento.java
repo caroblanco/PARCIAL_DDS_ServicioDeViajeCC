@@ -11,7 +11,7 @@ public class asiento {
 
     public void ocuparAsientoPor(pasajero Pasajero){
         ocupado= true;
-        pasajero = pasajero;
+        pasajero = Pasajero;
     }
 
     public void desocuparAsiento(){
@@ -20,7 +20,7 @@ public class asiento {
     }
 
     public boolean estaDisponible(){
-        return ocupado;
+        return !ocupado;
     }
 
     public int getNumAsiento(){

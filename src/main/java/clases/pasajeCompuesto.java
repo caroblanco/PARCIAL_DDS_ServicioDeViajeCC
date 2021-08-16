@@ -7,8 +7,8 @@ public class pasajeCompuesto extends itinerario{
     List<pasaje> pasajes = new ArrayList<>();
 
     @Override
-    public int tarifaTotal() {
-        return pasajes.stream().mapToInt(pasaje::getTarifa).sum();
+    public double tarifaTotal() {
+        return pasajes.stream().mapToDouble(pasaje::getTarifa).sum();
     }
 
     @Override
@@ -23,7 +23,7 @@ public class pasajeCompuesto extends itinerario{
 
     @Override
     public pasaje buscarPasaje(String idVuelo){
-        return pasajes.stream().filter(unP -> unP.getIdVuelo() == idVuelo).collect(Collectors.toList()).get(0);
+        return pasajes.stream().filter(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo)).collect(Collectors.toList()).get(0);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class pasajeCompuesto extends itinerario{
 
     @Override
     public vuelo getVuelo(String idVuelo) {
-        pasaje pasaje=pasajes.stream().filter(unP -> unP.getIdVuelo() == idVuelo).collect(Collectors.toList()).get(0);
+        pasaje pasaje=pasajes.stream().filter(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo)).collect(Collectors.toList()).get(0);
         return pasaje.getVuelo(idVuelo);
     }
 }

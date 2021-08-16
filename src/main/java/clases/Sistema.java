@@ -1,16 +1,30 @@
 package clases;
 
 import clases.services.api.entities.VueloApi;
+import strategy.notificarStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class sistema {
+public class Sistema {
 
     static List<usuario> usuarios = new ArrayList<>();
+    public static usuario caroUser = new usuario("caro","Emalena1", "caro@hotmail.com");
     static aerolinea aerolinea;
+    public static Sistema instancia = null;
+    {
+        usuarios.add(caroUser);
+    }
 
-    public sistema() {
+    public static Sistema getInstancia(){
+
+        if(instancia == null){
+            instancia = new Sistema();
+        }
+
+        return instancia;
+
     }
 
     public static void agregarUsuario(usuario usuarioNuevo){
@@ -35,13 +49,12 @@ public class sistema {
 
     public static boolean validarUsuario(String usuario, String contra){
 
-        boolean encontre= usuarios.stream().anyMatch(unU -> unU.getUsuario() == usuario && unU.getContrasenia() == contra);
+        return usuarios.stream().anyMatch(unU -> unU.getUsuario().equalsIgnoreCase(usuario) && unU.getContrasenia().equalsIgnoreCase(contra));
 
-        return encontre;
     }
 
     public static usuario buscarUsuario(String usuario){
-        return (usuario) usuarios.stream().filter(unU -> unU.getUsuario() == usuario);
+        return usuarios.stream().filter(unU -> unU.getUsuario().equalsIgnoreCase(usuario)).collect(Collectors.toList()).get(0);
     }
 
     public static void cancelarItinerario(int numItinerario) {
@@ -66,9 +79,25 @@ public class sistema {
         return aerolinea.existePasajero(documento);
     }
 
-    public static void agregarItinerarioAPasajero(VueloApi vuelo, String documento, int tarifa){
+    public static boolean hayPasajeros(){
+        return aerolinea.hayPasajeros();
+    }
 
-        aerolinea.agregarItinerarioAPasajero(vuelo,documento, tarifa);
+    public static vuelo crearNuestroVuelo(VueloApi vuelo,int tarifa, pasajero pasajero){
+
+        return aerolinea.crearNuestroVuelo(vuelo,tarifa,pasajero);
+    }
+
+    public static pasajero buscarPasajeroPorDocumento(String documento){
+        return aerolinea.buscarPasajeroPorDocumento(documento);
+    }
+
+    public static pasajero crearPasajero(String documento, String nombre, String telefono, usuario unUsuario, notificarStrategy formaNotif){
+        return aerolinea.crearPasajero(nombre, telefono, documento, formaNotif, unUsuario);
+    }
+
+    public static boolean asientoLibre(String idVuelo,int nuevoAsiento){
+        return aerolinea.asientoLibre(idVuelo, nuevoAsiento);
     }
 
 }

@@ -8,26 +8,30 @@ public class vuelo {
     int asientosTotales = 180;
     String origen;
     String destino;
-    int tarifa;
+    int tarifaBase;
     String dia;
     String horario;
     estadoState estado;
     List<asiento> asientos = new ArrayList<>();
     int delay;
 
-
     public vuelo(String id, int asientosTotales, String origen, String destino,int tarifa, String dia, String horario,  int delay){
         this.idVuelo = id;
         this.asientosTotales=asientosTotales;
         this.origen=origen;
         this.destino=destino;
-        this.tarifa=tarifa;
+        this.tarifaBase=tarifa;
         this.dia=dia;
         this.horario=horario;
         this.estado = this.setearEstado();
         this.crearAsientos(asientosTotales);
         this.delay = delay;
     }
+
+    public String getOrigen(){return origen;}
+    public String getDestino(){return destino;}
+
+    public List<asiento> getAsientos(){return asientos;}
 
     public estadoState setearEstado(){
         estadoState estado;
@@ -69,22 +73,16 @@ public class vuelo {
     public void cambiarEstado(estadoState nuevoEstado){this.estado = nuevoEstado;
     }
 
-    /*
-    public void restarAsientos(int cantidad){
-        asientosOcupados -= cantidad;
-    }
-
-    public void sumarAsientos(int cantidad){
-        asientosOcupados += cantidad;
-    }
-*/
-
     public void resetAsientos(){
         asientos.forEach(unA -> unA.desocuparAsiento());
     }
 
     public boolean cumpleDestinos(String destinoInicial, String destinoFinal){
-        return (origen == destinoInicial) && (destino == destinoFinal);
+        return (origen.equalsIgnoreCase(destinoInicial)) && (destino.equalsIgnoreCase(destinoFinal));
+    }
+
+    public asiento getAsientoX(int asientoSeleccionado){
+        return asientos.get(asientoSeleccionado);
     }
 
     public String getIdVuelo() {
@@ -93,5 +91,13 @@ public class vuelo {
 
     public estadoState getEstado(){
         return estado;
+    }
+
+    public boolean asientoLibre(int asientoNuevo){
+        return asientos.stream().anyMatch(unA -> unA.getNumAsiento() == asientoNuevo && unA.estaDisponible());
+    }
+
+    public void ocuparAsiento(int asientoSeleccionado,pasajero pasajero){
+        asientos.get(asientoSeleccionado).ocuparAsientoPor(pasajero);
     }
 }
