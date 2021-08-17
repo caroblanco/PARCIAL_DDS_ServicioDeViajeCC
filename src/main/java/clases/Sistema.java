@@ -9,13 +9,10 @@ import java.util.stream.Collectors;
 
 public class Sistema {
 
-    static List<usuario> usuarios = new ArrayList<>();
-    public static usuario caroUser = new usuario("caro","Emalena1", "caro@hotmail.com");
+    //static List<usuario> usuarios = new ArrayList<>();
     static aerolinea aerolinea;
     public static Sistema instancia = null;
-    {
-        usuarios.add(caroUser);
-    }
+
 
     public static Sistema getInstancia(){
 
@@ -27,16 +24,16 @@ public class Sistema {
 
     }
 
-    public static void agregarUsuario(usuario usuarioNuevo){
-        usuarios.add(usuarioNuevo);
-    }
-
     public static boolean validarContrasenia(String usuario, String contrasenia){
         return validador.validarContrasenia(usuario, contrasenia);
     }
 
     public static boolean validarUsuarioRegistrar(String usuario){
-        return usuarios.stream().anyMatch(unU -> unU.getUsuario().equalsIgnoreCase(usuario));
+
+        usuariosDAO usuariosDAO = new usuariosDAO();
+        List<String> nombresUsuarios = usuariosDAO.dameTodosLosNombresDeUsuarios();
+
+        return nombresUsuarios.stream().anyMatch(unNombre -> unNombre.equalsIgnoreCase(usuario));
     }
 
     public static List<vuelo> buscarVuelos(String destinoInicial, String destinoFinal){
@@ -49,12 +46,17 @@ public class Sistema {
 
     public static boolean validarUsuario(String usuario, String contra){
 
-        return usuarios.stream().anyMatch(unU -> unU.getUsuario().equalsIgnoreCase(usuario) && unU.getContrasenia().equalsIgnoreCase(contra));
+        usuario unUsuario = Sistema.buscarUsuario(usuario);
+
+        return unUsuario.validarContrasenia(contra);
 
     }
 
     public static usuario buscarUsuario(String usuario){
-        return usuarios.stream().filter(unU -> unU.getUsuario().equalsIgnoreCase(usuario)).collect(Collectors.toList()).get(0);
+
+        usuarioDAO usuarioDAO = new usuarioDAO();
+
+        return usuarioDAO.buscarUsuario(usuario);
     }
 
     public static void cancelarItinerario(int numItinerario) {
@@ -98,6 +100,16 @@ public class Sistema {
 
     public static boolean asientoLibre(String idVuelo,int nuevoAsiento){
         return aerolinea.asientoLibre(idVuelo, nuevoAsiento);
+    }
+
+    public static usuario crearUsuario(String nombreUsuario, String contrasenia, String email){
+
+        usuarioDAO usuarioDAO = new usuarioDAO();
+        int id = usuarioDAO.insert(nombreUsuario,contrasenia,email);
+
+        usuario unUsuario = new usuario(nombreUsuario, contrasenia, email,id);
+
+        return unUsuario;
     }
 
 }

@@ -5,22 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class usuario {
-    String nombreUsuario;
-    String contrasenia;
 
+
+    String nombreUsuario;
+    private String contrasenia;
+    String mail;
+    int id;
 
     public String getMail() {
         return mail;
     }
 
-    String mail;
-
-
-    public usuario(String nombreUsuario, String contrasenia, String mail) {
+    public usuario(String nombreUsuario, String contrasenia, String mail, int id) {
 
         this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.mail = mail;
+        this.id = id;
     }
 
     public String getUsuario(){ return nombreUsuario;}
@@ -28,5 +29,5 @@ public class usuario {
     public String getContrasenia(){return contrasenia;}
 
 
-
+    public boolean validarContrasenia(String contraseniaPasada){return contraseniaPasada.equals(contrasenia);}
 }

@@ -65,7 +65,7 @@ public class menu {
                                 System.out.println("Intente de nuevo");
                             }else{
                                 unUsuario = sistema.buscarUsuario(usuario);
-                                System.out.println("se inicio correctamente la sesion");
+                                System.out.println("Se inicio correctamente la sesion");
                             }
                         }
                         menu.menuIniciado();
@@ -89,9 +89,7 @@ public class menu {
                         System.out.println("Ingrese un mail");
                         String mail = scannerString.nextLine();
 
-                        usuario miUsuario = new usuario(usuario, contrasenaProvisoria, mail);
-                        sistema.agregarUsuario(miUsuario);
-                        unUsuario=miUsuario;
+                        unUsuario=sistema.crearUsuario(usuario,contrasenaProvisoria,mail);
 
                         System.out.println("Usuario creado exitosamente!");
                         menu.menuIniciado();

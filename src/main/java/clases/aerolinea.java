@@ -8,19 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static clases.Sistema.caroUser;
-
-
 public class aerolinea {
 
     List<vuelo> vuelos = new ArrayList<>();
     static List<pasajero> pasajeros = new ArrayList<>();
-    pasajero caro = new pasajero("CAROLINA bLANCO", "1540282287", "42878204", new sms(), caroUser);
     private static aerolinea aerolinea = null;
-
-    {
-        pasajeros.add(caro);
-    }
 
     private aerolinea() {
     }
