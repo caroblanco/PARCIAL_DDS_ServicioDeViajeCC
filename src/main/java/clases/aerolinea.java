@@ -49,7 +49,7 @@ public class aerolinea {
         return vuelos.stream().anyMatch(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo));
     }
 
-    public vuelo crearNuestroVuelo(VueloApi unVuelo, int tarifa, pasajero pasajero){
+    public vuelo crearNuestroVuelo(VueloApi unVuelo, pasajero pasajero){
         vuelo vueloNuestro;
         String id = unVuelo.flight.number;
 
@@ -57,7 +57,7 @@ public class aerolinea {
             vueloNuestro = Sistema.buscarVueloPorID(id);
         }
         else{
-            vueloNuestro = aerolinea.crearVuelo(unVuelo, tarifa);
+            vueloNuestro = aerolinea.crearVuelo(unVuelo);
             vuelos.add(vueloNuestro);
         }
 
@@ -70,14 +70,14 @@ public class aerolinea {
         return pasajero;
     }
 
-    public vuelo crearVuelo(VueloApi vuelo, int tarifa){
+    public vuelo crearVuelo(VueloApi vuelo){
         String id = vuelo.flight.number;
         String origen = vuelo.getOrigen();
         String destino = vuelo.getDestino();
         String fecha = vuelo.getFlight_date();
         String horario = vuelo.getTime();
         int delay = vuelo.getDelay();
-        return new vuelo(id, 180, origen,destino, tarifa, fecha, horario, delay);
+        return new vuelo(id, 180, origen,destino, fecha, horario, delay);
     }
 
     public pasajero buscarPasajeroPorDocumento(String documento){

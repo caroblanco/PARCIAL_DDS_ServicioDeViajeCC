@@ -1,11 +1,12 @@
 package clases;
 
+import clases.BD.usuarioDAO;
+import clases.BD.usuariosDAO;
+import clases.Security.validador;
 import clases.services.api.entities.VueloApi;
 import strategy.notificarStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Sistema {
 
@@ -85,9 +86,9 @@ public class Sistema {
         return aerolinea.hayPasajeros();
     }
 
-    public static vuelo crearNuestroVuelo(VueloApi vuelo,int tarifa, pasajero pasajero){
+    public static vuelo crearNuestroVuelo(VueloApi vuelo, pasajero pasajero){
 
-        return aerolinea.crearNuestroVuelo(vuelo,tarifa,pasajero);
+        return aerolinea.crearNuestroVuelo(vuelo,pasajero);
     }
 
     public static pasajero buscarPasajeroPorDocumento(String documento){

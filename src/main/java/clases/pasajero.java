@@ -1,17 +1,19 @@
 package clases;
+import clases.composite.itinerario;
 import strategy.notificarStrategy;
+import strategy.sms;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class pasajero {
     String nombre;
-    String telefono;
+    static String telefono;
     String documento;
-    notificarStrategy formaNotif;
-    tarjeta tarjeta;
-    usuario usuario;
-    List<itinerario> itinerarios = new ArrayList<>();
+    static notificarStrategy formaNotif;
+    static usuario usuario;
+    static List<itinerario> itinerarios = new ArrayList<>();
 
     public pasajero(String nombre, String telefono, String documento, notificarStrategy formaNotif, usuario unUsuario) {
         this.nombre = nombre;
@@ -27,17 +29,20 @@ public class pasajero {
 
     public String getNombre(){return nombre;}
 
-    public void serNotificado(String mensaje){
+    public static void serNotificado(String mensaje){
         formaNotif.notificar(mensaje, telefono, usuario.getMail());
     }
 
-    public void agregarItinerario(itinerario itinerario){itinerarios.add(itinerario);}
+    public static void agregarItinerario(itinerario itinerario){
+        itinerarios.add(itinerario);
+        pasajero.serNotificado("Ha comprado un itinerario, numero: " + itinerario.getNumItinerario());
+    }
 
     public void cancelarItinerario(int numItinerario){
         itinerario itinerario = this.buscarItinerario(numItinerario);
         itinerarios.remove(itinerario);
         itinerario.liberarAsiento();
-        this.serNotificado("se ha cancelado su itinerario numero: "+ numItinerario);
+        this.serNotificado("Se ha cancelado su itinerario numero: "+ numItinerario);
     }
 
     public void modificarAsiento(int numItinerario, String idVuelo, int nuevoAsiento){
@@ -49,13 +54,13 @@ public class pasajero {
     public itinerario buscarItinerario(int numItinerario){
         return itinerarios.stream().filter(unIt -> unIt.getNumItinerario() == numItinerario).collect(Collectors.toList()).get(0);
     }
-
+/*
     public estadoState verEstado(int numItinerario, String idVuelo){
         itinerario itinerario = this.buscarItinerario(numItinerario);
         vuelo vuelo = itinerario.getVuelo(idVuelo);
         return vuelo.getEstado();
     }
-
+*/
     public List<itinerario> getItinerarios(){return itinerarios;}
 
     public boolean tieneItinerario(int numItinerario){
