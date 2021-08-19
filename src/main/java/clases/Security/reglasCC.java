@@ -1,12 +1,12 @@
 package clases.Security;
 
-public class reglas {
+public class reglasCC {
     static int largoMinimo = 8;
     /*La misma debe tener mas de 8 caracteres e incluir un numero y una mayuscula,
     el nombre de clases.usuario debe ser distinto de la contraseña.*/
 
     static boolean cumpleLasReglas(String usuario, String contrasenia){
-        return reglas.cumpleMinimoLargo(contrasenia) && reglas.cumpleSintaxis(contrasenia) && reglas.distintoAUsuario(usuario,contrasenia);
+        return reglasCC.cumpleMinimoLargo(contrasenia) && reglas.cumpleSintaxis(contrasenia) && reglas.distintoAUsuario(usuario,contrasenia);
     }
 
     static boolean cumpleMinimoLargo(String contrasenia){
