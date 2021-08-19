@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class aerolinea {
+public class agencia {
 
     List<vuelo> vuelos = new ArrayList<>();
     static List<pasajero> pasajeros = new ArrayList<>();
-    private static aerolinea aerolinea = null;
+    private static agencia agencia = null;
 
-    private aerolinea() {
+    private agencia() {
     }
 
-    public static aerolinea getInstance() {
-        if (aerolinea == null)
-            aerolinea = new aerolinea();
-        return aerolinea;
+    public static agencia getInstance() {
+        if (agencia == null)
+            agencia = new agencia();
+        return agencia;
     }
 
     public List<vuelo> buscarVuelos(String destinoInicial, String destinoFinal) {
@@ -36,7 +36,7 @@ public class aerolinea {
     }
 
     public static List<pasajero> buscarPasajeroPorItinerario(int numItinerario) {
-        return pasajeros.stream().filter(unP -> unP.tieneItinerario(numItinerario)).collect(Collectors.toList());
+        return pasajeros.stream().filter(unP -> unP.existeItinerario(numItinerario)).collect(Collectors.toList());
     }
 
     public boolean existePasajero(String documento){
@@ -53,11 +53,11 @@ public class aerolinea {
         vuelo vueloNuestro;
         String id = unVuelo.flight.number;
 
-        if (aerolinea.existeVuelo(id)){
+        if (agencia.existeVuelo(id)){
             vueloNuestro = Sistema.buscarVueloPorID(id);
         }
         else{
-            vueloNuestro = aerolinea.crearVuelo(unVuelo);
+            vueloNuestro = agencia.crearVuelo(unVuelo);
             vuelos.add(vueloNuestro);
         }
 
@@ -85,7 +85,7 @@ public class aerolinea {
     }
 
     public static boolean asientoLibre(String idVuelo,int nuevoAsiento){
-        return aerolinea.buscarVueloPorID(idVuelo).asientoLibre(nuevoAsiento);
+        return agencia.buscarVueloPorID(idVuelo).asientoLibre(nuevoAsiento);
     }
 }
 

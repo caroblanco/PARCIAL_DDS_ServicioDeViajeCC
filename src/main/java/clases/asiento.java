@@ -8,7 +8,7 @@ public class asiento {
     pasajero pasajero;
     clase claseAsiento;
 
-    public asiento(int i) { //TODO ACA CAPAZ LE PASAMOS LA CLASE ??
+    public asiento(int i) {
         this.numAsiento = i;
         this.claseAsiento = this.setearClase();
     }

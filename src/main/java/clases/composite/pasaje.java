@@ -5,9 +5,9 @@ import clases.clase;
 import clases.vuelo;
 
 public class pasaje extends itinerario {
-    clases.vuelo vuelo;
+    vuelo vuelo;
     public double tarifa;
-    clases.asiento asiento;
+    asiento asiento;
     String origenInicial;
     String destinoFinal;
 
@@ -21,9 +21,14 @@ public class pasaje extends itinerario {
         this.pasajero = pasajero;
     }
 
+    public String getIdVuelo(){
+        return vuelo.getIdVuelo();
+    }
     public double getTarifa() {
         return tarifa;
     }
+    @Override
+    public vuelo getVuelo(String idVuelo){ return vuelo; }
 
     @Override
     public double tarifaTotal(){
@@ -48,12 +53,5 @@ public class pasaje extends itinerario {
         asiento.desocuparAsiento();
         vuelo.asientoCancelado();
     }
-
-    public String getIdVuelo(){
-        return vuelo.getIdVuelo();
-    }
-
-    @Override
-    public vuelo getVuelo(String idVuelo){ return vuelo; }
 
 }

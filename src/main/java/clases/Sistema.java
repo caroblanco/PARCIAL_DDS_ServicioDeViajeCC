@@ -11,7 +11,7 @@ import java.util.List;
 public class Sistema {
 
     //static List<usuario> usuarios = new ArrayList<>();
-    static aerolinea aerolinea;
+    static agencia agencia;
     public static Sistema instancia = null;
 
 
@@ -38,11 +38,11 @@ public class Sistema {
     }
 
     public static List<vuelo> buscarVuelos(String destinoInicial, String destinoFinal){
-        return aerolinea.buscarVuelos(destinoInicial,destinoFinal);
+        return agencia.buscarVuelos(destinoInicial,destinoFinal);
     }
 
     public static vuelo buscarVueloPorID(String idVuelo){
-        return aerolinea.buscarVueloPorID(idVuelo);
+        return agencia.buscarVueloPorID(idVuelo);
     }
 
     public static boolean validarUsuario(String usuario, String contra){
@@ -68,7 +68,7 @@ public class Sistema {
     }
 
    public static List<pasajero> buscarPasajeroPorItinerario(int numItinerario){
-        return aerolinea.buscarPasajeroPorItinerario(numItinerario);
+        return agencia.buscarPasajeroPorItinerario(numItinerario);
    }
 
     public static void modificarAsiento(int numItinerario, String idVuelo, int nuevoAsiento) {
@@ -79,28 +79,28 @@ public class Sistema {
     }
 
     public static boolean existePasajero(String documento){
-        return aerolinea.existePasajero(documento);
+        return agencia.existePasajero(documento);
     }
 
     public static boolean hayPasajeros(){
-        return aerolinea.hayPasajeros();
+        return agencia.hayPasajeros();
     }
 
     public static vuelo crearNuestroVuelo(VueloApi vuelo, pasajero pasajero){
 
-        return aerolinea.crearNuestroVuelo(vuelo,pasajero);
+        return agencia.crearNuestroVuelo(vuelo,pasajero);
     }
 
     public static pasajero buscarPasajeroPorDocumento(String documento){
-        return aerolinea.buscarPasajeroPorDocumento(documento);
+        return agencia.buscarPasajeroPorDocumento(documento);
     }
 
     public static pasajero crearPasajero(String documento, String nombre, String telefono, usuario unUsuario, notificarStrategy formaNotif){
-        return aerolinea.crearPasajero(nombre, telefono, documento, formaNotif, unUsuario);
+        return agencia.crearPasajero(nombre, telefono, documento, formaNotif, unUsuario);
     }
 
     public static boolean asientoLibre(String idVuelo,int nuevoAsiento){
-        return aerolinea.asientoLibre(idVuelo, nuevoAsiento);
+        return agencia.asientoLibre(idVuelo, nuevoAsiento);
     }
 
     public static usuario crearUsuario(String nombreUsuario, String contrasenia, String email){

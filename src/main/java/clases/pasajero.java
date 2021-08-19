@@ -54,18 +54,8 @@ public class pasajero {
     public itinerario buscarItinerario(int numItinerario){
         return itinerarios.stream().filter(unIt -> unIt.getNumItinerario() == numItinerario).collect(Collectors.toList()).get(0);
     }
-/*
-    public estadoState verEstado(int numItinerario, String idVuelo){
-        itinerario itinerario = this.buscarItinerario(numItinerario);
-        vuelo vuelo = itinerario.getVuelo(idVuelo);
-        return vuelo.getEstado();
-    }
-*/
-    public List<itinerario> getItinerarios(){return itinerarios;}
 
-    public boolean tieneItinerario(int numItinerario){
-        return itinerarios.stream().anyMatch(unIt -> unIt.getNumItinerario() == numItinerario);
-    }
+    public List<itinerario> getItinerarios(){return itinerarios;}
 
     public String getDocumento(){ return documento;}
 }

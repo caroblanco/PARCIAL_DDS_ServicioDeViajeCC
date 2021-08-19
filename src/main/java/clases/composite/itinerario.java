@@ -5,7 +5,7 @@ import clases.vuelo;
 
 public abstract class itinerario {
     int numItinerario;
-    clases.pasajero pasajero;
+    pasajero pasajero;
 
     public abstract double tarifaTotal();
 

@@ -307,7 +307,7 @@ public class menu {
             vuelo vueloNuestro = sistema.crearNuestroVuelo(vuelo, pasajero);
 
             double tarifa = vueloNuestro.getEstadoAsientos().precioPorEstado();
-            int tarifaBase = vueloNuestro.getTarifaBase();
+            int tarifaBase = vueloNuestro.getPrecioBase();
 
             asiento asiento = menu.seleccionarAsiento(vueloNuestro, pasajero);
             int numAsiento = asiento.getNumAsiento();

@@ -26,39 +26,37 @@ public class vuelo {
         this.dia=dia;
         this.horario=horario;
         this.estadoAsientos = new vacio(this);
-        this.crearAsientos(asientosTotales);
+        this.crearAsientos();
         this.delay = delay;
     }
 
     public String getOrigen(){return origen;}
     public String getDestino(){return destino;}
-
-    public List<asiento> getAsientos(){return asientos;}
-
-    /*
-    public estadoState setearEstado(){
-        estadoState estado;
-        if(delay >0){
-            estado = new delayed(this);
-        }else{
-            estado = new onTime(this);
-        }
-        return estado;
+    public asiento getAsientoX(int asientoSeleccionado){
+        return asientos.get(asientoSeleccionado);
     }
-*/
-    public void crearAsientos(int asientosTotales){
+    public String getIdVuelo() {
+        return idVuelo;
+    }
+    public estadoAsientos getEstadoAsientos() {return estadoAsientos; }
+    public List<asiento> getAsientos(){return asientos;}
+    public String getHorario(){
+        return this.horario;
+    }
+    public String getFecha(){
+        return this.dia;
+    }
+    public int getPrecioBase() { return precioBase;   }
+
+    public clase getAsientoPasajero(String documento) {
+        return asientos.stream().filter(unA -> unA.getDocPasajero().equals(documento)).collect(Collectors.toList()).get(0).getClase();
+    }
+
+    public void crearAsientos(){
         for(int i = 1 ; i <= asientosTotales ; i++){
             asiento asiento = new asiento(i);
             asientos.add(asiento);
         }
-    }
-
-    public String getHorario(){
-        return this.horario;
-    }
-
-    public String getFecha(){
-        return this.dia;
     }
 
     public asiento buscarAsiento(int numAsiento){
@@ -68,14 +66,7 @@ public class vuelo {
     public List<asiento> asientosDisponibles(){
         return asientos.stream().filter(unAsiento -> unAsiento.estaDisponible()).collect(Collectors.toList());
     }
-/*
-    public estadoState validarEstado(){
-        return estado;
-    }
 
-    public void cambiarEstado(estadoState nuevoEstado){this.estado = nuevoEstado;
-    }
-*/
     public void resetAsientos(){
         asientos.forEach(unA -> unA.desocuparAsiento());
     }
@@ -83,18 +74,6 @@ public class vuelo {
     public boolean cumpleDestinos(String destinoInicial, String destinoFinal){
         return (origen.equalsIgnoreCase(destinoInicial)) && (destino.equalsIgnoreCase(destinoFinal));
     }
-
-    public asiento getAsientoX(int asientoSeleccionado){
-        return asientos.get(asientoSeleccionado);
-    }
-
-    public String getIdVuelo() {
-        return idVuelo;
-    }
-/*
-    public estadoState getEstado(){
-        return estado;
-    }*/
 
     public boolean asientoLibre(int asientoNuevo){
         return asientos.stream().anyMatch(unA -> unA.getNumAsiento() == asientoNuevo && unA.estaDisponible());
@@ -112,20 +91,8 @@ public class vuelo {
         return asientos.stream().filter(unA -> !unA.estaDisponible()).collect(Collectors.toList()).size();
     }
 
-    public int getPrecioBase() { return precioBase;   }
-
     public void cambiarEstadoAsientos(estadoAsientos estado){
         estadoAsientos=estado;
-    }
-
-    public estadoAsientos getEstadoAsientos() {return estadoAsientos; }
-
-
-    public int getTarifaBase() {return precioBase;
-    }
-
-    public clase getAsientoPasajero(String documento) {
-        return asientos.stream().filter(unA -> unA.getDocPasajero().equals(documento)).collect(Collectors.toList()).get(0).getClase();
     }
 
     public void asientoCancelado() {
