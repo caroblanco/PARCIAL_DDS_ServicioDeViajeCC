@@ -1,13 +1,13 @@
 package clases.Security;
 
-import clases.Security.reglas;
+import clases.Security.reglasCC;
 
 import java.io.FileNotFoundException;
 
 public class validador {
 
     public static boolean validarContrasenia(String usuario, String contrasenia){
-        return reglas.cumpleLasReglas(usuario,contrasenia);
+        return reglasCC.cumpleLasReglas(usuario,contrasenia);
     }
 
     public static void main(String[] args) throws FileNotFoundException {

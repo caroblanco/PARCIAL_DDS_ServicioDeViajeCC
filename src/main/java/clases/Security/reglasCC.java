@@ -6,7 +6,7 @@ public class reglasCC {
     el nombre de clases.usuario debe ser distinto de la contraseña.*/
 
     static boolean cumpleLasReglas(String usuario, String contrasenia){
-        return reglasCC.cumpleMinimoLargo(contrasenia) && reglas.cumpleSintaxis(contrasenia) && reglas.distintoAUsuario(usuario,contrasenia);
+        return reglasCC.cumpleMinimoLargo(contrasenia) && reglasCC.cumpleSintaxis(contrasenia) && reglasCC.distintoAUsuario(usuario,contrasenia);
     }
 
     static boolean cumpleMinimoLargo(String contrasenia){
