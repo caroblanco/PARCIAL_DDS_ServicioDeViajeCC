@@ -11,7 +11,7 @@ import java.util.List;
 public class Sistema {
 
     //static List<usuario> usuarios = new ArrayList<>();
-    static agencia agencia;
+    static agencia agencia = clases.agencia.getInstance();
     public static Sistema instancia = null;
 
 
@@ -86,9 +86,9 @@ public class Sistema {
         return agencia.hayPasajeros();
     }
 
-    public static vuelo crearNuestroVuelo(VueloApi vuelo, pasajero pasajero){
+    public static vuelo crearNuestroVuelo(VueloApi vuelo){
 
-        return agencia.crearNuestroVuelo(vuelo,pasajero);
+        return agencia.crearNuestroVuelo(vuelo);
     }
 
     public static pasajero buscarPasajeroPorDocumento(String documento){

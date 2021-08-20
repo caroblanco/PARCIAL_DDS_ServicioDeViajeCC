@@ -5,7 +5,7 @@ import static clases.clase.*;
 public class asiento {
     int numAsiento;
     boolean ocupado = false;
-    pasajero pasajero;
+    String docPasajero;
     clase claseAsiento;
 
     public asiento(int i) {
@@ -27,14 +27,14 @@ public class asiento {
         return claseAsiento;
     }
 
-    public void ocuparAsientoPor(pasajero Pasajero){
-        ocupado= true;
-        pasajero = Pasajero;
+    public void ocuparAsientoPor(String docPasajero){
+        this.ocupado= true;
+        this.docPasajero = docPasajero;
     }
 
     public void desocuparAsiento(){
-        ocupado = false;
-        pasajero = null;
+        this.ocupado = false;
+        docPasajero = null;
     }
 
     public boolean estaDisponible(){
@@ -45,7 +45,7 @@ public class asiento {
         return numAsiento;
     }
 
-    public String getDocPasajero() { return pasajero.getDocumento();
+    public String getDocPasajero() { return docPasajero;
     }
 
     public clase getClase() { return claseAsiento;

@@ -6,42 +6,46 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class pasajeCompuesto extends itinerario {
-    List<pasaje> pasajes = new ArrayList<>();
+    List<itinerario> itinerarios = new ArrayList<>();
 
-
-    public pasajeCompuesto(List<pasaje> pasajes, clases.pasajero pasajero) {
-        this.pasajes = pasajes;
+    public pasajeCompuesto(clases.pasajero pasajero) {
+        super();
     }
-
 
     @Override
     public double tarifaTotal() {
-        return pasajes.stream().mapToDouble(pasaje::getTarifa).sum()*0.95;
+        return itinerarios.stream().mapToDouble(unI -> unI.tarifaTotal()).sum()*0.95;
     }
 
     @Override
     public void cambiarAsiento(String idVuelo, int nuevoAsiento) {
-        pasaje pasaje = this.buscarPasaje(idVuelo);
-        pasaje.cambiarAsiento(idVuelo,nuevoAsiento);
-    }
-
-    public void agregarPasaje(pasaje pasaje){
-        pasajes.add(pasaje);
+        itinerario itinerario = this.buscarPasaje(idVuelo);
+        itinerario.cambiarAsiento(idVuelo, nuevoAsiento);
     }
 
     @Override
-    public pasaje buscarPasaje(String idVuelo){
-        return pasajes.stream().filter(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo)).collect(Collectors.toList()).get(0);
+    public itinerario buscarPasaje(String idVuelo){
+        return itinerarios.stream().filter(unI -> unI.getListaIdVuelo().stream().anyMatch(unS -> unS.equalsIgnoreCase(idVuelo))).collect(Collectors.toList()).get(0);
     }
 
     @Override
     public void liberarAsiento() {
-        pasajes.forEach(unP -> unP.liberarAsiento());
+        itinerarios.forEach(unP -> unP.liberarAsiento());
     }
 
     @Override
     public vuelo getVuelo(String idVuelo) {
-        pasaje pasaje=pasajes.stream().filter(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo)).collect(Collectors.toList()).get(0);
-        return pasaje.getVuelo(idVuelo);
+        itinerario itinerario = this.buscarPasaje(idVuelo);
+        return itinerario.getVuelo(idVuelo);
     }
+
+    public List<String> getListaIdVuelo(){
+        return itinerarios.stream().map(unI -> unI.getListaIdVuelo().get(0)).collect(Collectors.toList());
+
+    }
+
+    public void add (itinerario unItinerario){
+        itinerarios.add(unItinerario);
+    }
+
 }

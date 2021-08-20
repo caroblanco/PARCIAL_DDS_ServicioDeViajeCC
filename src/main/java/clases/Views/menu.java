@@ -50,9 +50,17 @@ public class menu {
                         System.out.println("Ingrese ID del vuelo que desea ver");
                         idVuelo = scannerString.nextLine();
 
-                        vuelo vuelo = sistema.buscarVueloPorID(idVuelo);
+                        Ciudad ciudadOrigen = menu.elegirCiudad("origen");
+                        Airport aeropuertoOrigen = menu.elegirAeropuerto("origen", ciudadOrigen);
 
-                        //BUSCAR VUELO EN LA API!!!
+                        Ciudad ciudadDestino = menu.elegirCiudad("destino");
+                        Airport aeropuertoDestino = menu.elegirAeropuerto("destino", ciudadDestino);
+
+                        //vuelo vuelo = sistema.buscarVueloPorID(idVuelo);
+                        String estadoVuelo = api.estadoVuelo(aeropuertoOrigen.iata_code,aeropuertoDestino.iata_code,idVuelo);
+
+                        System.out.println("El estado del vuelo buscado es " +estadoVuelo);
+
                         menu.main(args);
                         break;
                     case 2:
@@ -135,13 +143,16 @@ public class menu {
                         System.out.println("1. Un pasaje directo");
                         System.out.println("2. Mas de un vuelo directo");
                         int opcion = scannerInt.nextInt();
-                        itinerario itinerario=null;
                         double precioFinal=0;
+                        int numIt = 0;
 
                         switch (opcion) {
                             case 1:
-                                 itinerario = menu.crearPasaje();
+                                itinerario itinerario = menu.crearPasaje();
                                 precioFinal = itinerario.tarifaTotal();
+                                pasajero = menu.crearPasajero();
+                                pasajero.agregarItinerario(itinerario);
+                                numIt = itinerario.getNumItinerario();
                                 break;
                             case 2:
                                 System.out.println("Cuantos pasajes desea comprar?");
@@ -154,14 +165,15 @@ public class menu {
                                 }
 
                                 pasajero = menu.crearPasajero();
-                                itinerario = new pasajeCompuesto(pasajes,pasajero);
-                                precioFinal = itinerario.tarifaTotal();
+                                pasajeCompuesto itinerario2 = new pasajeCompuesto(pasajero);
+                                pasajes.forEach(itinerario2::add);
+                                precioFinal = itinerario2.tarifaTotal();
+                                pasajero.agregarItinerario(itinerario2);
+                                numIt = itinerario2.getNumItinerario();
                                 break;
                         }
-                        pasajero = menu.crearPasajero();
-                        pasajero.agregarItinerario(itinerario);
 
-                        System.out.println("Ha adquirido un itinerario exitosamente. Su numero de itinerario es "+ itinerario.getNumItinerario()+"y el precio final es" + precioFinal);
+                        System.out.println("Ha adquirido un itinerario exitosamente. Su numero de itinerario es "+ numIt +"y el precio final es" + precioFinal);
 
                         menu.menuIniciado();
                         break;
@@ -304,12 +316,13 @@ public class menu {
 
 
             pasajero pasajero = menu.crearPasajero();
-            vuelo vueloNuestro = sistema.crearNuestroVuelo(vuelo, pasajero);
+            String docPasajero = pasajero.getDocumento();
+            vuelo vueloNuestro = sistema.crearNuestroVuelo(vuelo);
 
             double tarifa = vueloNuestro.getEstadoAsientos().precioPorEstado();
             int tarifaBase = vueloNuestro.getPrecioBase();
 
-            asiento asiento = menu.seleccionarAsiento(vueloNuestro, pasajero);
+            asiento asiento = menu.seleccionarAsiento(vueloNuestro, docPasajero);
             int numAsiento = asiento.getNumAsiento();
             clase clase = null;
 
@@ -320,18 +333,18 @@ public class menu {
             } else if (numAsiento <= 180) {
             }
 
-            return new pasaje(vueloNuestro, tarifa, asiento, pasajero);
+            return new pasaje(vueloNuestro, tarifa, asiento, docPasajero);
         }
     }
 
-    public static asiento seleccionarAsiento(vuelo vuelo,pasajero pasajero){
+    public static asiento seleccionarAsiento(vuelo vuelo,String docPasajero){
         System.out.println("Seleccione su asiento, teniendo en cuenta que...");
         System.out.println("*Los asientos numerados del 1 al 20 son primera clase, que aniade a la tarifa base un 20% extra");
         System.out.println("*Los asientos numerados del 21 al 50 son clase business, que aniade a la tarifa base un 15% extra");
         System.out.println("*Los asientos numerados del 51 al 180 son clase economy, que no aniade nada a la tarifa base");
 
         int asientoSeleccionado = menu.mostrarAsientosLibresVuelo(vuelo);
-        vuelo.ocuparAsiento(asientoSeleccionado,pasajero);
+        vuelo.ocuparAsiento(asientoSeleccionado,docPasajero);
 
         return vuelo.getAsientoX(asientoSeleccionado);
     }
@@ -340,12 +353,11 @@ public class menu {
         List<asiento> asientos = vuelo.getAsientos();
         Scanner scannerInt = new Scanner(System.in);
 
-        System.out.println("Seleccione el numero de asiento que desea");
-        for(int i=1; i<=180;i++){
-            if(asientos.get(i).estaDisponible()){
-                System.out.println(asientos.get(i).getNumAsiento());
-            }
-        }
+        System.out.println("Los asientos disponibles son: ");
+        List<asiento> asientosDisp = asientos.stream().filter(asiento -> asiento.estaDisponible()).collect(Collectors.toList());
+        asientosDisp.forEach(asiento -> System.out.printf("%d , ",asiento.getNumAsiento()));
+        System.out.println("Seleccione uno: ");
+
         return scannerInt.nextInt();
     }
 

@@ -12,10 +12,11 @@ import retrofit2.http.Query;
 
 public interface apiService {
 
-
-
     @GET("flights")
     Call<respuesta> vuelos(@Query("access_key") String apiKey, @Query("dep_iata") String dep_iata, @Query("arr_iata") String arr_iata, @Query("flight_status") String status);
+
+    @GET("flights")
+    Call<respuesta> vuelo(@Query("access_key") String apiKey, @Query("dep_iata") String dep_iata, @Query("arr_iata") String arr_iata, @Query("flight_number") String flightNumber);
 
     @GET("cities")
     Call<respuestaCiudades> ciudad(@Query("access_key") String apiKey, @Query("offset") int offset);

@@ -1,10 +1,6 @@
 package clases.services.api;
 
-import clases.services.api.entities.Ciudad;
-import clases.services.api.entities.Airport;
-import clases.services.api.entities.respuesta;
-import clases.services.api.entities.respuestaAirport;
-import clases.services.api.entities.respuestaCiudades;
+import clases.services.api.entities.*;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -32,10 +28,10 @@ public class apiAviationStack {
     //String apiKey = "d112c93bb0cb62f964988ca032e9314b";
     //String apiKey = "8552d194bf1d1893a4eb704b2c98d300";
     //String apiKey = "5d4f50e60e9c71c9af4855b1a4fedd37";
-    String apiKey = "f3bb42f55d541626b6574395422675c1";
+    //String apiKey = "f3bb42f55d541626b6574395422675c1";
     //String apiKey = "17daaa1891d355f36daeb5342ecf3e83";
     //String apiKey = "498595cf0e93153d3f4ef96dd35572fd";
-    //String apiKey = "72f06b104cfdc3f6d6fc1511e6f5d932";
+    String apiKey = "72f06b104cfdc3f6d6fc1511e6f5d932";
     //String apiKey = "18b35bcff9029d15e3b8a6462fae64a7";
     //String apiKey = "79737cbad367383694748dcc0f9d00e6";
     //String apiKey = "02c360e1b37a75dba3b5e347d1b972a3";
@@ -154,6 +150,22 @@ public class apiAviationStack {
         return aeropuertosElegidos;
 
     }
+
+    public String estadoVuelo(String origen, String destino, String numeroDeVuelo) throws IOException{
+
+
+        apiService ciudadesService = this.retrofit.create(apiService.class);
+        Call<respuesta> requestCiudad = ciudadesService.vuelo(apiKey,origen, destino, numeroDeVuelo);
+        Response<respuesta> responseCiudades = requestCiudad.execute();
+
+        List<VueloApi> vuelos = responseCiudades.body().getListaDeVuelos();
+
+        List<VueloApi> vuelosFiltrados = vuelos.stream().filter(vueloApi -> !vueloApi.flight_status.equalsIgnoreCase("landed")).collect(Collectors.toList()); //Deberia devolver uno solo
+
+
+        return vuelosFiltrados.get(0).flight_status;
+    }
+
 
 
 

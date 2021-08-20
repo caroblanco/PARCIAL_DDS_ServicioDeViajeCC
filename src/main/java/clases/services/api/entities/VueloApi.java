@@ -22,4 +22,6 @@ public class VueloApi {
 
     public int getDelay(){return departure.getDelay();}
 
+    public String getFlight_status(){ return flight_status;}
+
 }

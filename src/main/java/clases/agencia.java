@@ -31,10 +31,6 @@ public class agencia {
         return vuelos.stream().filter(unV -> unV.getIdVuelo().equalsIgnoreCase(idVuelo)).collect(Collectors.toList()).get(0);
     }
 
-    public void agregarPasajero(pasajero pasajero) {
-        pasajeros.add(pasajero);
-    }
-
     public static List<pasajero> buscarPasajeroPorItinerario(int numItinerario) {
         return pasajeros.stream().filter(unP -> unP.existeItinerario(numItinerario)).collect(Collectors.toList());
     }
@@ -49,7 +45,7 @@ public class agencia {
         return vuelos.stream().anyMatch(unP -> unP.getIdVuelo().equalsIgnoreCase(idVuelo));
     }
 
-    public vuelo crearNuestroVuelo(VueloApi unVuelo, pasajero pasajero){
+    public vuelo crearNuestroVuelo(VueloApi unVuelo){
         vuelo vueloNuestro;
         String id = unVuelo.flight.number;
 

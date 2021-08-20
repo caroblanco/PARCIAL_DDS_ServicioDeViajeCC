@@ -79,8 +79,8 @@ public class vuelo {
         return asientos.stream().anyMatch(unA -> unA.getNumAsiento() == asientoNuevo && unA.estaDisponible());
     }
 
-    public void ocuparAsiento(int asientoSeleccionado,pasajero pasajero){
-        asientos.get(asientoSeleccionado).ocuparAsientoPor(pasajero);
+    public void ocuparAsiento(int asientoSeleccionado,String docPasajero){
+        asientos.get(asientoSeleccionado).ocuparAsientoPor(docPasajero);
     }
 
     public boolean tieneAsientosLibres() {

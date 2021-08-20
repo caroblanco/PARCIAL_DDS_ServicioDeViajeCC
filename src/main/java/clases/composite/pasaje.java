@@ -4,6 +4,9 @@ import clases.asiento;
 import clases.clase;
 import clases.vuelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class pasaje extends itinerario {
     vuelo vuelo;
     public double tarifa;
@@ -11,19 +14,23 @@ public class pasaje extends itinerario {
     String origenInicial;
     String destinoFinal;
 
-    public pasaje(vuelo vuelo, double tarifa, asiento asiento, clases.pasajero pasajero) {
+    public pasaje(vuelo vuelo, double tarifa, asiento asiento, String docPasajero) {
+        super();
         this.vuelo = vuelo;
         this.tarifa = tarifa;
         this.asiento = asiento;
         this.origenInicial = vuelo.getOrigen();
         this.destinoFinal = vuelo.getDestino();
-        //TODO this.numItinerario= random
-        this.pasajero = pasajero;
+        this.docPasajero = docPasajero;
     }
 
-    public String getIdVuelo(){
-        return vuelo.getIdVuelo();
+    public List<String> getListaIdVuelo(){
+        List<String> id = new ArrayList<>();
+        id.add(vuelo.getIdVuelo());
+
+        return id;
     }
+
     public double getTarifa() {
         return tarifa;
     }
@@ -39,7 +46,7 @@ public class pasaje extends itinerario {
     public void cambiarAsiento(String idVuelo, int nuevoAsiento){
         asiento.desocuparAsiento();
         asiento = vuelo.buscarAsiento(nuevoAsiento);
-        asiento.ocuparAsientoPor(pasajero);
+        asiento.ocuparAsientoPor(docPasajero);
     }
 
     @Override
