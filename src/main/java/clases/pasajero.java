@@ -35,20 +35,20 @@ public class pasajero {
 
     public static void agregarItinerario(itinerario itinerario){
         itinerarios.add(itinerario);
-        pasajero.serNotificado("Ha comprado un itinerario, numero: " + itinerario.getNumItinerario());
+        pasajero.serNotificado("Este es un mensaje de la agencia de viajes CC -> Felicidades! Ha comprado un itinerario con exito, su numero es: " + itinerario.getNumItinerario()+". Ante cualquier problema, no dude en contactarnos!");
     }
 
     public void cancelarItinerario(int numItinerario){
         itinerario itinerario = this.buscarItinerario(numItinerario);
         itinerarios.remove(itinerario);
         itinerario.liberarAsiento();
-        this.serNotificado("Se ha cancelado su itinerario numero: "+ numItinerario);
+        this.serNotificado("Este es un mensaje de la agencia de viajes CC -> Se ha cancelado su itinerario numero: "+ numItinerario);
     }
 
     public void modificarAsiento(int numItinerario, String idVuelo, int nuevoAsiento){
         itinerario itinerario = this.buscarItinerario(numItinerario);
         itinerario.cambiarAsiento(idVuelo, nuevoAsiento);
-        this.serNotificado("se ha modificado el vuelo: "+ idVuelo + "de su itinerario: "+numItinerario );
+        this.serNotificado("Este es un mensaje de la agencia de viajes CC -> Se ha modificado el vuelo: "+ idVuelo + "de su itinerario: "+numItinerario );
     }
 
     public itinerario buscarItinerario(int numItinerario){

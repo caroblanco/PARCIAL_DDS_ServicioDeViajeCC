@@ -65,7 +65,7 @@ public class menu {
                         break;
                     case 2:
                         while(!verificado){
-                            System.out.println("Ingrese un Usuario: ");
+                            System.out.println("Ingrese un usuario: ");
                             String usuario= scannerString.nextLine();
 
                             System.out.println("Ingrese una contrasenia: ");
@@ -173,7 +173,7 @@ public class menu {
                                 break;
                         }
 
-                        System.out.println("Ha adquirido un itinerario exitosamente. Su numero de itinerario es "+ numIt +"y el precio final es" + precioFinal);
+                        System.out.println("Ha adquirido un itinerario exitosamente. Su numero de itinerario es "+ numIt +" y el precio final es " + precioFinal);
 
                         menu.menuIniciado();
                         break;
@@ -402,7 +402,7 @@ public class menu {
             System.out.println("NO HAY CIUDADES DISPONIBLES");
             return menu.elegirCiudad(que);
         }else{
-            System.out.println("Las ciudades disponibles son: ");
+            System.out.println("Los timezones de las ciudades disponibles son: ");
             for(int i = 0; i< ciudades.size(); i++){
                 System.out.println(contador + "- " + ciudades.get(i).getTimezone());
                 contador++;
